@@ -13,7 +13,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       drawer: Drawer(
         child: Column(
           children: [
-            UserAccountsDrawerHeader( currentAccountPicture: Image.network('https://icons8.com/icon/98957/user'),
+            UserAccountsDrawerHeader( currentAccountPicture: Image.asset('assets/images/477290_male.png'),
               accountName: Text('Emanuel Ngola'),
                accountEmail: Text('emanuelngola33@gmail.com')),
             ListTile(
