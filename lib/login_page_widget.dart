@@ -1,9 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as htpp;
+import 'package:http/http.dart' as http;
+import 'package:desafio_login/view_data.dart';
 
 class LoginPageWidget extends StatefulWidget {
   const LoginPageWidget({super.key});
@@ -17,8 +17,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  clearrecord() {
+    name.text = "";
+    email.text = "";
+    password.text = "";
+  }
+
   Future<void> insertRecord() async {
-    if (name.text == "" || email.text == "" || password.text == "") {
+    if (name.text != "" || email.text != "" || password.text != "") {
       try {
         String uri = "http://localhost/practice_api/insert.php";
         var res = await http.post(Uri.parse(uri), body: {
@@ -26,7 +32,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           "email": email.text,
           "password": password.text
         });
-        var response = jsonDecode(res);
+        var response = jsonDecode(res.body);
         if (response["success"] == "true") {
           print('Registo feito com sucesso');
         }
@@ -85,18 +91,43 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               margin: EdgeInsets.all(10),
               child: TextFormField(
                 controller: password,
+                obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Escreva a password')),
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: ElevatedButton(
-                  onPressed: () {
-                    insertRecord();
-                  },
-                  child: Text('Gravar')),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                ),
+                Container(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        insertRecord();
+                         clearrecord() ;
+                      },
+                      child: Text('Gravar')),
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                ),
+                Container(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewData()));
+                      },
+                      child: Text('Ver registo')),
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                ),
+              ],
             ),
           ],
         ));
